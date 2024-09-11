@@ -1,6 +1,8 @@
 import petModule from "../petData.js";
 import { PetInput } from "../types.js";
+import { PubSub } from "graphql-subscriptions";
 
+const pubsub = PubSub
 const resolvers = {
   Query: {
     pets: () => petModule.getPets(),
@@ -25,6 +27,11 @@ const resolvers = {
       return petModule.deletePet(idToNumber);
     },
   },
+  Subscription: {
+    petHappinessUpdated: {
+      subscribe: () => pubsub.asyncIterator(['CUISINE_ADDED'])
+    }
+  } 
 };
 
 export default resolvers;
